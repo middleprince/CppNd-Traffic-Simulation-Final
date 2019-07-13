@@ -18,7 +18,7 @@ class TrafficObject
 public:
     // constructor / desctructor
     TrafficObject();
-    ~TrafficObject();
+    virtual ~TrafficObject();
 
     // getter and setter
     int getID() { return _id; }
@@ -27,7 +27,7 @@ public:
     ObjectType getType() { return _type; }
 
     // typical behaviour methods
-    virtual void simulate(){};
+    virtual void simulate() = 0;
 
 protected:
     ObjectType _type;                 // identifies the class type
