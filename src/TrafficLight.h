@@ -19,9 +19,6 @@ template <class T>
 class MessageQueue
 {
 public:
-    MessageQueue();
-    ~MessageQueue();
-
     void send(T &&);
     T receive();
 
@@ -51,6 +48,7 @@ public:
 
     // getters / setters
     TrafficLightPhase getCurrentPhase();
+    void setCurrentPhase(TrafficLightPhase currentPhase) {_currentPhase = currentPhase;}
     
 
     // typical behaviour methods
@@ -66,7 +64,7 @@ private:
     // and use it within the infinite loop to push each new TrafficLightPhase into it by calling 
     // send in conjunction with move semantics.
     
-   MessageQueue<TrafficLightPhase> queueLight; 
+    MessageQueue<TrafficLightPhase> queueLight; 
     std::condition_variable _condition;
     std::mutex _mutex;
 };

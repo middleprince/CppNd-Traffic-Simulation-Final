@@ -27,7 +27,7 @@ public:
     ObjectType getType() { return _type; }
 
     // typical behaviour methods
-    virtual void simulate() = 0;
+    void simulate() {};
 
 protected:
     ObjectType _type;                 // identifies the class type

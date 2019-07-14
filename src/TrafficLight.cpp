@@ -44,7 +44,11 @@ void TrafficLight::waitForGreen()
     // runs and repeatedly calls the receive function on the message queue. 
     // Once it receives TrafficLightPhase::green, the method returns.
     while (true) {
-        auto msg = queueLight.receive(); 
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        //auto msg = getCurrentPhase();
+        auto msg =  queueLight.receive(); 
+        setCurrentPhase(msg);
+
         if (msg == TrafficLightPhase::green)
             return;
     }
@@ -84,28 +88,31 @@ void TrafficLight::cycleThroughPhases()
         long timeSinceLastUpdate ;
 
         while (true) {
-            timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
-                std::chrono::system_clock::now() - lastUpdate).count();
-            if (timeSinceLastUpdate >= cycleDurationLow && timeSinceLastUpdate <= cycleDurationHigh) {
-                // send trafficPhase to messagequeue
-                queueLight.send(std::move(TrafficLightPhase::green));
-                break;
-            }
-            // reset stop watch for next cycle
-            lastUpdate = std::chrono::system_clock::now();
-        }
-        
-        while (true) {
-            timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
+            timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::seconds>(
                 std::chrono::system_clock::now() - lastUpdate).count();
             if (timeSinceLastUpdate >= cycleDurationLow && timeSinceLastUpdate <= cycleDurationHigh) {
                 // send trafficPhase to messagequeue
                 queueLight.send(std::move(TrafficLightPhase::red));
+                std::cout << "## Debug for TrfficLight Msg !! Green In ##" << std::endl;
                 break;
             }
-            // reset stop watch for next cycle
-            lastUpdate = std::chrono::system_clock::now();
         }
+        // reset stop watch for next cycle
+        lastUpdate = std::chrono::system_clock::now();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        
+        while (true) {
+            timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::seconds>(
+                std::chrono::system_clock::now() - lastUpdate).count();
+            if (timeSinceLastUpdate >= cycleDurationLow && timeSinceLastUpdate <= cycleDurationHigh) {
+                // send trafficPhase to messagequeue
+                queueLight.send(std::move(TrafficLightPhase::green));
+                std::cout << "## Debug for TrfficLight Msg !! Red In ##" << std::endl;
+                break;
+            }
+        }
+        // reset stop watch for next cycle
+        lastUpdate = std::chrono::system_clock::now();
     }
 }
 
