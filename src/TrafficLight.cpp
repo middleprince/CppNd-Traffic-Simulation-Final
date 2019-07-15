@@ -93,7 +93,7 @@ void TrafficLight::cycleThroughPhases()
             if (timeSinceLastUpdate >= cycleDurationLow && timeSinceLastUpdate <= cycleDurationHigh) {
                 // send trafficPhase to messagequeue
                 queueLight.send(std::move(TrafficLightPhase::red));
-                std::cout << "## Debug for TrfficLight Msg !! Green In ##" << std::endl;
+                std::cout << "## Debug for TrfficLight Msg In Queue !! red In ##" << std::endl;
                 break;
             }
         }
@@ -107,7 +107,7 @@ void TrafficLight::cycleThroughPhases()
             if (timeSinceLastUpdate >= cycleDurationLow && timeSinceLastUpdate <= cycleDurationHigh) {
                 // send trafficPhase to messagequeue
                 queueLight.send(std::move(TrafficLightPhase::green));
-                std::cout << "## Debug for TrfficLight Msg !! Red In ##" << std::endl;
+                std::cout << "## Debug for TrfficLight Msg In Queue !! Green ##" << std::endl;
                 break;
             }
         }
