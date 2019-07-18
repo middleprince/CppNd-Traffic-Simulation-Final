@@ -106,9 +106,13 @@ void TrafficLight::cycleThroughPhases()
                 _currentPhase = TrafficLightPhase::red;
 
             auto msg = getCurrentPhase();
-            auto is_sent = std::async(std::launch::async, &MessageQueue<TrafficLightPhase>::send, queueLight, std::move(msg));
-            is_sent.wait();
+
+            // origional implementation  
+            //auto is_sent = std::async(std::launch::async, &MessageQueue<TrafficLightPhase>::send, queueLight, std::move(msg));
+            //is_sent.wait();
             
+            // a more suitable implementation
+            queueLight->send(std::move(msg));
             // reset stop watch for next cycle
             lastUpdate = std::chrono::system_clock::now();
         }
